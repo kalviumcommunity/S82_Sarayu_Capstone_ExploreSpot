@@ -1,7 +1,7 @@
 # Explore Spot - A Community-Driven Travel Platform
 
 ## Project Idea
-Explore Spot is a platform where travelers can share their experiences, upload photos, and rate places they visit. Users looking for travel inspiration can search for specific locations or browse all shared experiences. The platform will also feature personalized recommendations based on seasons and real-time weather. Additionally, businesses (restaurants, hotels, tour guides) can promote themselves to travelers, making it a comprehensive travel discovery hub.
+ Explore Spot is a platform where travelers can share their experiences, upload photos, and rate places they visit. Users looking for travel inspiration can search for specific locations or browse all shared experiences. The platform will also feature personalized recommendations based on seasons and real-time weather. Additionally, businesses (restaurants, hotels, tour guides) can promote themselves to travelers, making it a comprehensive travel discovery hub.
 
 ## 30-Day Plan
 
@@ -110,5 +110,5 @@ Explore Spot is a platform where travelers can share their experiences, upload p
 - Submit project repository link & demo video
 
 ## Conclusion
-This project aims to create an engaging platform for travel enthusiasts while offering businesses an opportunity to reach their audience. By leveraging real-time weather data and seasonal recommendations, Explore Spot will provide users with meaningful travel insights. 🚀
+ This project aims to create an engaging platform for travel enthusiasts while offering businesses an opportunity to reach their audience. By leveraging real-time weather data and seasonal recommendations, Explore Spot will provide users with meaningful travel insights. 🚀
 
