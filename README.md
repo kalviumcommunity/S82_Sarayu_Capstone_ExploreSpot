@@ -1,3 +1,4 @@
+
 # Explore Spot - A Community-Driven Travel Platform
 
 ## Project Idea
