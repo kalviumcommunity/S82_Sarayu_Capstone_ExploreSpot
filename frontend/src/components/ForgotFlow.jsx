@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import ForgotPassword from "./ForgotPassword";
-import EnterOTP from "./EnterOTP";
+import EnterOTP from "./EnterOtp";
 import ResetPassword from "./ResetPassword";
 
 function ForgotFlow() {
