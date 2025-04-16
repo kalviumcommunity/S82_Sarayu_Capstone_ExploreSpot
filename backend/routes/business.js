@@ -42,7 +42,7 @@ router.put("/:id", async (req, res) => {
     business.imageUrl = imageUrl || business.imageUrl;
 
     await business.save();
-    res.json(business);
+    res.json({data:business});
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
