@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
-// Load environment variables first
+// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -11,11 +11,21 @@ app.use(express.json());
 // Routes
 const authRoutes = require("./routes/auth");
 const otpRoutes = require("./routes/otpRoutes");
+const userRoutes = require("./routes/user");
+const destinationRoutes = require("./routes/destination");
+const businessRoutes = require("./routes/business");
+const travelPostRoutes = require('./routes/travelpost');
 
+// Mount routes
 app.use("/api", authRoutes);
-app.use("/api", otpRoutes); // ⚠️ Make sure this file exists and exports a router
+app.use("/api", otpRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/destinations", destinationRoutes);
+app.use("/api/business", businessRoutes);
+app.use("/api/travelpost", travelPostRoutes); 
 
-// Global Error Handling Middleware (keep it at the end)
+
+// Global Error Handler (keep at the end)
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
     success: false,
@@ -29,9 +39,9 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
     app.listen(process.env.PORT, () => {
-      console.log(` Server running on http://localhost:${process.env.PORT}`);
+      console.log(`Server running on http://localhost:${process.env.PORT}`);
     });
   })
   .catch((err) => {
-    console.error(" MongoDB connection failed", err);
+    console.error("MongoDB connection failed", err);
   });
