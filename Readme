@@ -25,7 +25,7 @@
 #### **Day 5: Experience API Development**
 - Develop API for posting travel experiences (text, images, ratings)
 
-#### **Day 6: Image Storage Setup**
+#### **Day 6: Image Storage Setup** 
 - Set up image storage (Cloudinary/AWS S3)
 - Create API for fetching user profiles & experiences
 
