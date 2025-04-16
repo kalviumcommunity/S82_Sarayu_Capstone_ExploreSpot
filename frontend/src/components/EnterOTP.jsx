@@ -35,4 +35,3 @@ function EnterOTP({ email, onVerified }) {
 }
 
 export default EnterOTP;
-
