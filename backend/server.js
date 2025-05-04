@@ -1,12 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-
+const cors = require("cors");
 // Load environment variables
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
+}));
 
 // Routes
 const authRoutes = require("./routes/auth");
@@ -18,7 +23,7 @@ const travelPostRoutes = require('./routes/travelpost');
 
 // Mount routes
 app.use("/api", authRoutes);
-app.use("/api", otpRoutes);
+app.use("/api2", otpRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/business", businessRoutes);

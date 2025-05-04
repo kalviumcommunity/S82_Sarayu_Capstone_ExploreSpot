@@ -5,7 +5,7 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
 
   const handleSignup = async (e) => {
     e.preventDefault(); // prevent default form reload
@@ -14,8 +14,8 @@ const Signup = () => {
       formData.append("name", name);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("profile", file);
-
+      // formData.append("profile", file);
+      console.log(formData);
       const res = await axios.post(' http://localhost:5000/api/signup', formData);
       console.log(res.data); // show success or navigate
     } catch (err) {
@@ -55,14 +55,14 @@ const Signup = () => {
           placeholder="Enter your password"
         />
       </div>
-      <div>
+      {/* <div>
         <label className="block text-sm">Profile Picture</label>
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
           className="w-full mt-1 text-white"
         />
-      </div>
+      </div> */}
       <button
         type="submit"
         className="w-full bg-black hover:bg-gray-900 transition-all p-2 rounded text-white font-semibold"

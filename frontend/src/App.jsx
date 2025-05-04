@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
-import Signup from "./components/signUp";
+import Signup from "../components/signUp";
 import ForgotPassword from "./components/ForgotPassword";
 
 
@@ -12,7 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route
-          path="/"
+          path="/login"
           element={
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black transition-all duration-500">
               <div className="bg-gray-800 p-8 rounded-2xl shadow-2xl w-96 text-white">

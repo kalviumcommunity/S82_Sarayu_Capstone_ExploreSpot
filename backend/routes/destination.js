@@ -6,7 +6,7 @@ const Destination = require("../model/destination");
 router.get("/", async (req, res) => {
   try {
     const destinations = await Destination.find();
-    res.json(destinations);
+     res.json(destinations);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
+  
 
 
 
