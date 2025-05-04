@@ -10,7 +10,7 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       // Send OTP to user's email
-      const response = await axios.post("http://localhost:5000/api/send-otp", { email });
+      const response = await axios.post("http://localhost:5000/api2/send-otp", { email });
 
       setMessage(response.data.message || "OTP has been sent to your email.");
       setErrorMessage("");
