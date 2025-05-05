@@ -9,7 +9,7 @@ const router = express.Router();
 
 // GET route for login (for testing)
 router.get("/login", (req, res) => {
-  res.status(200).send("Login page is ready");
+  res.status(200).send("Login page ready");
 });
 
 // POST route for login
@@ -35,7 +35,7 @@ router.post("/login", async (req, res, next) => {
 
 // GET route for signup (for testing)
 router.get("/signup", (req, res) => {
-  res.status(200).send("Signup page is ready");
+  res.status(200).send("Signup page  ready");
 });
 
 // POST route for signup
