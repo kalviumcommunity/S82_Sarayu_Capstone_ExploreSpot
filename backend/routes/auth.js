@@ -35,7 +35,7 @@ router.post("/login", async (req, res, next) => {
 
 // GET route for signup (for testing)
 router.get("/signup", (req, res) => {
-  res.status(200).send("Signup page ready");
+  res.status(200).send("Signup page  ready");
 });
 
 // POST route for signup
