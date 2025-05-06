@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from 'react-router-dom';
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -43,6 +43,12 @@ function ForgotPassword() {
           <button
             type="submit"
             className="w-full bg-black hover:bg-gray-900 transition-all p-2 rounded text-white font-semibold"
+            onClick={() => {
+              setTimeout(() => {
+                navigate("/enter-otp");
+              }, 2000);
+            }
+            }
           >
             Send OTP
           </button>

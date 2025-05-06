@@ -1,77 +1,161 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+const LoginPage = () => {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  // Handle form submission
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make API request to login endpoint
-      const response = await axios.post( "http://localhost:5000/api/login", {
-        email,
-        password,
+      const response = await axios.post('http://localhost:5000/api/login', form, {
+        withCredentials: true,
       });
-      
-      // Handle successful login
-      console.log(response.data);
-      localStorage.setItem("authToken", response.data.token); // Example: store token in localStorage
-      window.location.href = "/dashboard"; // Redirect to dashboard or home
-    } catch (error) {
-      // Handle errors
-      setErrorMessage("Invalid email or password.");
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        navigate('/');
+      } else {
+        setError("Invalid email or password.");
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setError("Invalid email or password.");
+      } else if (err.response && err.response.status === 404) {
+        setError(err.response.data.message || "User not found.");
+      } else {
+        setError("Something went wrong. Please try again later.");
+      }
     }
   };
 
   return (
-    <form className="space-y-5" onSubmit={handleSubmit}>
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-      
-      <div>
-        <label className="block text-sm">Email</label>
-        <input
-          type="email"
-          className="w-full mt-1 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          placeholder="Enter your Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      
-      <div>
-        <label className="block text-sm">Password</label>
-        <input
-          type="password"
-          className="w-full mt-1 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        
-        <div className="text-right mt-1">
-          <Link
-            to="/forgot-password"
-            className="text-sm text-blue-400 hover:underline"
-          >
-            Forgot Password?
-          </Link>
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100vh",
+      width: "100vw",
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center"
+    }}>
+      <div style={{
+        display: "flex",
+        width: "800px",
+        backgroundColor: "white",
+        borderRadius: "10px",
+        boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
+        overflow: "hidden"
+      }}>
+        {/* Left Panel */}
+        <div style={{
+          width: "50%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "30px",
+          backgroundImage: "linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)"
+        }}>
+          <h2 style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>Welcome Back!</h2>
+        </div>
+
+        {/* Right Panel */}
+        <div style={{
+          width: "50%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "30px",
+          textAlign: "center",
+          backgroundColor: "#f4f4f4"
+        }}>
+          <h3 style={{
+            fontFamily: "Nunito",
+            fontWeight: "bold",
+            fontSize: "1.8rem",
+            backgroundImage: "linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)",
+            WebkitBackgroundClip: "text",
+            color: "transparent"
+          }}>
+            Log in
+          </h3>
+          {error && <p style={{ color: error.includes("successful") ? "green" : "red", fontWeight: "bold" }}>{error}</p>}
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Email ID"
+              required
+              style={{
+                padding: "12px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                fontSize: "1rem"
+              }}
+            />
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Enter Your Password"
+              required
+              style={{
+                padding: "12px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                fontSize: "1rem"
+              }}
+            />
+            <button
+              type="submit"
+              style={{
+                padding: "12px",
+                borderRadius: "5px",
+                backgroundImage: "linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                cursor: "pointer",
+                transition: "0.3s"
+              }}
+              onMouseOver={(e) => e.target.style.opacity = "0.8"}
+              onMouseOut={(e) => e.target.style.opacity = "1"}
+            >
+              Login
+            </button>
+          </form>
+          <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
+            Don’t have an account?{' '}
+            <span
+              style={{ color: "#007BFF", cursor: "pointer", fontWeight: "bold" }}
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </span>
+          </p>
+          <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
+            Don’t have an account?{' '}
+            <span
+              style={{ color: "#007BFF", cursor: "pointer", fontWeight: "bold" }}
+              onClick={() => navigate("/forgot-password")}
+            >
+              Sign up
+            </span>
+          </p>
         </div>
       </div>
-      
-      <button
-        type="submit"
-        className="w-full bg-black hover:bg-gray-900 transition-all p-2 rounded text-white font-semibold"
-      >
-        Login
-      </button>
-    </form>
+    </div>
   );
-}
+};
 
-export default Login;
+export default LoginPage;
