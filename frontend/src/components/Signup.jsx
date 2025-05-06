@@ -1,76 +1,140 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Signup = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // const [file, setFile] = useState(null);
 
-  const handleSignup = async (e) => {
-    e.preventDefault(); // prevent default form reload
+const SignupPage = () => {
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
-      // formData.append("profile", file);
-      console.log(formData);
-      const res = await axios.post(' http://localhost:5000/api/signup', formData);
-      console.log(res.data); // show success or navigate
+      const res = await axios.post('http://localhost:5000/api/signup', form, {
+        withCredentials: true,
+      });
+      navigate('/login');
     } catch (err) {
-      console.error(err.response?.data || err.message);
+      setError(err.response?.data?.message || 'Signup failed');
     }
   };
 
   return (
-    <form className="space-y-5" onSubmit={handleSignup}>
-      <div>
-        <label className="block text-sm">Name</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full mt-1 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          placeholder="Your Name"
-        />
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      width: '100vw',
+      backgroundSize: '100% 100%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+    }}>
+      <div style={{
+        display: 'flex',
+        width: '800px',
+        backgroundColor: 'white',
+        borderRadius: '10px',
+        boxShadow: '0px 4px 20px rgba(0,0,0,0.3)',
+        overflow: 'hidden',
+      }}>
+        {/* Left Panel */}
+        <div style={{
+          width: '50%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '30px',
+          backgroundImage: 'linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)',
+        }}>
+          <h2 style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}>Join Us Today!</h2>
+        </div>
+
+        {/* Right Panel */}
+        <div style={{
+          width: '50%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '30px',
+          textAlign: 'center',
+          backgroundColor: '#f4f4f4',
+        }}>
+          <h3 style={{
+            fontFamily: 'Nunito',
+            fontWeight: 'bold',
+            fontSize: '1.8rem',
+            backgroundImage: 'linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+            marginBottom: '15px'
+          }}>
+            Sign up
+          </h3>
+          {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              style={{ padding: '12px', borderRadius: '5px', border: '1px solid #ccc', fontSize: '1rem' }}
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              style={{ padding: '12px', borderRadius: '5px', border: '1px solid #ccc', fontSize: '1rem' }}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              style={{ padding: '12px', borderRadius: '5px', border: '1px solid #ccc', fontSize: '1rem' }}
+            />
+            <button type="submit" style={{
+              padding: '12px',
+              borderRadius: '5px',
+              backgroundImage: 'linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)',
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: '1rem',
+              cursor: 'pointer',
+              transition: '0.3s'
+            }}
+              onMouseOver={(e) => e.target.style.opacity = '0.8'}
+              onMouseOut={(e) => e.target.style.opacity = '1'}
+            >
+              Sign up
+            </button>
+          </form>
+          <p style={{ marginTop: '10px', fontSize: '0.9rem' }}>
+            Already have an account?{' '}
+            <span
+              style={{ color: '#007BFF', cursor: 'pointer', fontWeight: 'bold' }}
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </span>
+          </p>
+        </div>
       </div>
-      <div>
-        <label className="block text-sm">Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full mt-1 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          placeholder="Enter your mail"
-        />
-      </div>
-      <div>
-        <label className="block text-sm">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full mt-1 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          placeholder="Enter your password"
-        />
-      </div>
-      {/* <div>
-        <label className="block text-sm">Profile Picture</label>
-        <input
-          type="file"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="w-full mt-1 text-white"
-        />
-      </div> */}
-      <button
-        type="submit"
-        className="w-full bg-black hover:bg-gray-900 transition-all p-2 rounded text-white font-semibold"
-      >
-        Sign Up
-      </button>
-    </form>
+    </div>
   );
 };
 
-export default Signup;
+export default SignupPage;

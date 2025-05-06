@@ -9,8 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: "http://localhost:5173",
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
+  credentials: true
+  // allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"]
 }));
 
 // Routes
