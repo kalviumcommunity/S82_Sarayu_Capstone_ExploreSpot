@@ -20,6 +20,7 @@ function ResetPassword({ email }) {
   return (
     <form onSubmit={handleReset} className="space-y-4">
       <label className="block text-sm">New Password</label>
+      
       <input
         type="password"
         value={newPassword}
