@@ -12,6 +12,7 @@ router.post("/send-otp", async (req, res) => {
     expiresAt: Date.now() + 5 * 60 * 1000,
   };
 
+  
   res.json({ success: true, message: "OTP sent to email" });
 });
 
