@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 // POST a new travel post
 router.post("/", async (req, res) => {
-  const { title, description, location, imageUrl, createdBy } = req.body;
+  const { title, description, location, imageUrl, createdBy }=req.body;
   try {
     const post = new TravelPost({ title, description, location, imageUrl, createdBy });
     await post.save();
