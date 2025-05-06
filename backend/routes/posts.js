@@ -17,7 +17,6 @@ router.post('/', (req, res) => {
 });
 
 
-
 // PUT update post
 router.put('/:id', (req, res) => {
   const postId = parseInt(req.params.id);
