@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 // POST a new destination
 router.post("/", async (req, res) => {
-  const { name, country, description, imageUrl }=req.body;
+  const { name, country, description, imageUrl } = req.body;
   try {
     const destination = new Destination({ name, country, description, imageUrl });
     await destination.save();
@@ -48,8 +48,6 @@ router.put("/:id", async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
-
 
 
 module.exports = router;

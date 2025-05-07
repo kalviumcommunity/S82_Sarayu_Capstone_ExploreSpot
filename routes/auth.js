@@ -4,15 +4,19 @@ const User = require("../model/user");
 const sendToken = require("../utils/jwtToken");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { isAuthenticated } = require("../middleware/auth");
+const sendOtp = require("../utils/sendOtp");
+const otpStore = require("../utils/otpStore");
 
 const router = express.Router();
 
-// GET route for login (for testing)
+// --- LOGIN ROUTES ---
+
+// GET login test route
 router.get("/login", (req, res) => {
   res.status(200).send("Login page ready");
 });
 
-// POST route for login
+// POST login
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -33,16 +37,59 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-// GET route for signup (for testing)
-router.get("/signup", (req, res) => {
-  res.status(200).send("Signup page  ready");
+// --- OTP ROUTES ---
+
+// POST send OTP
+router.post("/send-otp", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const otp = await sendOtp(email);
+
+    otpStore[email] = {
+      otp,
+      expiresAt: Date.now() + 5 * 60 * 1000, // OTP valid for 5 minutes
+    };
+
+    res.json({ success: true, message: "OTP sent to email" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to send OTP" });
+  }
 });
 
-// POST route for signup
+// POST verify OTP
+router.post("/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+  const storedOtpData = otpStore[email];
+
+  if (!storedOtpData)
+    return res.status(400).json({ success: false, message: "No OTP found for this email." });
+
+  if (Date.now() > storedOtpData.expiresAt) {
+    delete otpStore[email];
+    return res.status(400).json({ success: false, message: "OTP expired." });
+  }
+
+  if (storedOtpData.otp !== otp)
+    return res.status(400).json({ success: false, message: "Invalid OTP." });
+
+  delete otpStore[email];
+  res.json({ success: true, message: "OTP verified successfully." });
+});
+
+// --- SIGNUP ROUTES ---
+
+// GET signup test route
+router.get("/signup", (req, res) => {
+  res.status(200).send("Signup page ready");
+});
+
+// POST signup
 router.post("/signup", async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     console.log(req.body);
+
     if (!name || !email || !password)
       return next(new ErrorHandler("All fields are required", 400));
 
@@ -67,7 +114,9 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
-// Protected route example
+// --- PROTECTED USER INFO ROUTE ---
+
+// GET /me
 router.get("/me", isAuthenticated, async (req, res, next) => {
   res.status(200).json({
     success: true,

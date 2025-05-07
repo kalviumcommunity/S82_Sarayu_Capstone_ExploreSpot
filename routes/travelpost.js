@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 
 // POST a new travel post
 router.post("/", async (req, res) => {
-  const { title, description, location, imageUrl, createdBy }=req.body;
+  const { title, description, location, imageUrl, createdBy } = req.body;
   try {
     const post = new TravelPost({ title, description, location, imageUrl, createdBy });
     await post.save();
@@ -34,7 +34,6 @@ router.put("/:id", async (req, res) => {
       // Find the travel post by ID
       const post = await TravelPost.findById(req.params.id);
       
-      // If the post doesn't exist, return a 404 error
       if (!post) {
         return res.status(404).json({ message: "Post not found" });
       }
