@@ -4,6 +4,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import SignupPage from "./components/Signup";
 import LoginPage from "./components/Login";
 import EnterOTP from "./components/EnterOTP";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   // const [showLogin, setShowLogin] = useState(true);
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/enter-otp" element={<EnterOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   );
