@@ -5,6 +5,7 @@ const destinationSchema = new mongoose.Schema({
   country: String,
   description: String,
   imageUrl: String,
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // relationship added
   createdAt: { type: Date, default: Date.now },
 });
 
