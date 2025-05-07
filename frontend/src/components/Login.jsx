@@ -144,12 +144,11 @@ const LoginPage = () => {
             </span>
           </p>
           <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
-            Don’t have an account?{' '}
             <span
               style={{ color: "#007BFF", cursor: "pointer", fontWeight: "bold" }}
               onClick={() => navigate("/forgot-password")}
             >
-              Sign up
+              Forget-Password
             </span>
           </p>
         </div>

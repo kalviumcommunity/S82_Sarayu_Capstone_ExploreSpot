@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
 
 function ResetPassword({ email }) {
   const [newPassword, setNewPassword] = useState("");
+  const navigate = useNavigate(); 
 
   const handleReset = async (e) => {
     e.preventDefault();
@@ -12,6 +14,7 @@ function ResetPassword({ email }) {
         newPassword,
       });
       alert("Password reset successfully!");
+      navigate("/login"); 
     } catch (err) {
       alert("Failed to reset password.");
     }
@@ -20,7 +23,6 @@ function ResetPassword({ email }) {
   return (
     <form onSubmit={handleReset} className="space-y-4">
       <label className="block text-sm">New Password</label>
-      
       <input
         type="password"
         value={newPassword}
