@@ -26,6 +26,7 @@ router.post("/", isAuthenticated, async (req, res) => {
       createdBy: req.user._id, // set the user who created the destination
     });
 
+    
     await destination.save();
     res.status(201).json(destination);
   } catch (err) {
