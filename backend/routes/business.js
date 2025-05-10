@@ -12,6 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+
 // POST a new business (requires req.user.id from auth middleware)
 router.post("/", async (req, res) => {
   const { name, type, location, contactInfo, imageUrl } = req.body;

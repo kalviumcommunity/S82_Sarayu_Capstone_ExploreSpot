@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+
 // POST a new travel post (requires authentication)
 router.post("/", isAuthenticated, async (req, res) => {
   const { title, description, location, imageUrl } = req.body;
