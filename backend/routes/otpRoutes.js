@@ -16,4 +16,5 @@ router.post("/send-otp", async (req, res) => {
   res.json({ success: true, message: "OTP sent to email" });
 });
 
+
 module.exports = router; 
