@@ -12,32 +12,21 @@ import Thankyou from "./pages/Thankyou";
 import PromoteBusiness from "./components/PromoteBusiness";
 import FileUpload from "./components/FileUpload";
 
-
-
-
-
 function App() {
   return (
-    <Router>
+    <Router> 
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/enter-otp" element={<EnterOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/home-page" element={<HomePage />} />
         <Route path="/explore" element={<ExploreSpots />} />
-         <Route path="/share" element={<ShareExperience />} />
-         <Route path="/thank-you" element={<Thankyou />} />
-           <Route path="/promote" element={<PromoteBusiness />} />
-           <Route path ="/file-upload"element={<FileUpload/>}/>
-
-
-
-
-
-
-
+        <Route path="/share" element={<ShareExperience />} />
+        <Route path="/thank-you" element={<Thankyou />} />
+        <Route path="/promote" element={<PromoteBusiness />} />
+        <Route path="/file-upload" element={<FileUpload />} />
       </Routes>
     </Router>
   );
