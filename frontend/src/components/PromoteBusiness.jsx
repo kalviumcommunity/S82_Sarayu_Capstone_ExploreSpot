@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+0
 const PromoteBusiness = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -8,9 +8,9 @@ const PromoteBusiness = () => {
     location: "",
     description: "",
     contact: "",
-    image: "",
   });
 
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,11 +20,28 @@ const PromoteBusiness = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      data.append(key, formData[key]);
+    });
+
+    if (imageFile) {
+      data.append("image", imageFile);
+    }
+
     try {
-      await api.post("/promotions", formData); // Adjust endpoint
+      await api.post("/promotions", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       navigate("/thank-you");
     } catch (error) {
       console.error("Failed to promote business:", error);
@@ -106,15 +123,14 @@ const PromoteBusiness = () => {
             />
           </div>
 
-          {/* Image URL */}
+          {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Image URL (optional)</label>
+            <label className="block text-sm font-medium text-gray-700">Upload Image (optional)</label>
             <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
           </div>
 
