@@ -6,11 +6,9 @@ import LoginPage from "./components/Login";
 import EnterOTP from "./components/EnterOTP";
 import ResetPassword from "./components/ResetPassword";
 import HomePage from "./components/HomePage";
-import ExploreSpots from "./components/ExploreSpots";
 import ShareExperience from "./components/ShareExperience";
 import Thankyou from "./pages/Thankyou";
 import PromoteBusiness from "./components/PromoteBusiness";
-import FileUpload from "./components/FileUpload";
 
 function App() {
   return (
@@ -22,11 +20,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/enter-otp" element={<EnterOTP />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/explore" element={<ExploreSpots />} />
         <Route path="/share" element={<ShareExperience />} />
         <Route path="/thank-you" element={<Thankyou />} />
         <Route path="/promote" element={<PromoteBusiness />} />
-        <Route path="/file-upload" element={<FileUpload />} />
       </Routes>
     </Router>
   );
