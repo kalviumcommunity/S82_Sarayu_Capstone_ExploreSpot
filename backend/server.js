@@ -26,7 +26,6 @@ const userRoutes = require("./routes/user");
 const destinationRoutes = require("./routes/destination");
 const businessRoutes = require("./routes/business");
 const travelPostRoutes = require("./routes/travelpost");
-const experienceRoutes = require("./routes/experienceRoutes"); // 🔹 NEW
 
 // Mount routes
 app.use("/api", authRoutes);
@@ -35,7 +34,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/destinations", destinationRoutes);
 app.use("/api/business", businessRoutes);
 app.use("/api/travelpost", travelPostRoutes);
-app.use("/api/experience", experienceRoutes); // 🔹 NEW
 
 // Global Error Handler (keep at the end)
 app.use((err, req, res, next) => {

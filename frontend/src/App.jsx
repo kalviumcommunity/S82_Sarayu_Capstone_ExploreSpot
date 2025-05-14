@@ -9,6 +9,7 @@ import HomePage from "./components/HomePage";
 import ShareExperience from "./components/ShareExperience";
 import Thankyou from "./pages/Thankyou";
 import PromoteBusiness from "./components/PromoteBusiness";
+import ExploreSpot from "./components/ExploreSpot";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/share" element={<ShareExperience />} />
         <Route path="/thank-you" element={<Thankyou />} />
         <Route path="/promote" element={<PromoteBusiness />} />
+        <Route path="/explore" element={<ExploreSpot />} />
       </Routes>
     </Router>
   );

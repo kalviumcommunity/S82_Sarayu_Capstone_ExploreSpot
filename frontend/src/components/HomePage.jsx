@@ -77,7 +77,7 @@ const HomePage = () => {
               Share Experience
             </Link>
             <Link
-              to="/promote"
+              to="/"
               className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
             >
               Get Hotels
