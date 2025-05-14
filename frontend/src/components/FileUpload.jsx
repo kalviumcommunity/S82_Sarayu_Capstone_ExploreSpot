@@ -13,6 +13,7 @@ const FileUpload = () => {
     setMessage("");
   };
 
+
   const handleUpload = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -29,6 +30,7 @@ const FileUpload = () => {
       setMessage("❌ Upload failed.");
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
