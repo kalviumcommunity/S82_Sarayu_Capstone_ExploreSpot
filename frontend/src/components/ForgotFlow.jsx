@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import ForgotPassword from "./ForgotPassword";
 import EnterOTP from "../EnterOtp";
@@ -9,10 +8,19 @@ function ForgotFlow() {
   const [email, setEmail] = useState("");
 
   return (
-    <div className="p-6 bg-gray-800 text-white rounded-xl shadow-md max-w-md mx-auto">
-      {step === 1 && <ForgotPassword onOtpSent={(email) => { setEmail(email); setStep(2); }} />}
-      {step === 2 && <EnterOTP email={email} onVerified={() => setStep(3)} />}
-      {step === 3 && <ResetPassword email={email} />}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 px-4 py-12">
+      <div className="bg-white/30 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-full max-w-md">
+        {step === 1 && (
+          <ForgotPassword
+            onOtpSent={(email) => {
+              setEmail(email);
+              setStep(2);
+            }}
+          />
+        )}
+        {step === 2 && <EnterOTP email={email} onVerified={() => setStep(3)} />}
+        {step === 3 && <ResetPassword email={email} />}
+      </div>
     </div>
   );
 }
