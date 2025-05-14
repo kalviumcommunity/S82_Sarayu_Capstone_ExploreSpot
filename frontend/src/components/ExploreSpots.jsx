@@ -51,7 +51,7 @@ const ExploreSpots = () => {
 
       <div className="text-center mt-12">
         <Link
-          to="/home-page"
+          to="/"
           className="inline-block bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold px-6 py-3 rounded-full shadow-md transition"
         >
           Back to Home
