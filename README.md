@@ -115,3 +115,4 @@
 
 
 ## Deploy Backend-server: https://s82-sarayu-capstone-explorespot.onrender.com
+## Deploy Frontend-server: https://explorespot.netlify.app/
