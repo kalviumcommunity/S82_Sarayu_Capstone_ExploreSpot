@@ -10,7 +10,7 @@ const ThankYou = () => {
           Your experience has been successfully shared. 🌍✨
         </p>
         <Link
-          to="/explore-spots"
+          to="/share"
           className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-full font-semibold hover:opacity-90"
         >
           Explore Other Spots
