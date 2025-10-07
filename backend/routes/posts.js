@@ -8,14 +8,12 @@ router.get('/', (req, res) => {
   res.json(posts);
 });
 
-
 // POST create new post
 router.post('/', (req, res) => {
   const newPost = { id: Date.now(), ...req.body };
   posts.push(newPost);
   res.status(201).json(newPost);
 });
-
 
 // PUT update post
 router.put('/:id', (req, res) => {

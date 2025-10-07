@@ -25,7 +25,6 @@ router.post("/", isAuthenticated, async (req, res) => {
       imageUrl,
       createdBy: req.user._id, // set the user who created the destination
     });
-
     
     await destination.save();
     res.status(201).json(destination);

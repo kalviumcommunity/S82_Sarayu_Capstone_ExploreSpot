@@ -10,7 +10,7 @@ const LoginPage = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -23,7 +23,8 @@ const LoginPage = () => {
       } else {
         setError("Invalid email or password.");
       }
-    } catch (err) {
+    }
+     catch (err) {
       if (err.response && err.response.status === 401) {
         setError("Invalid email or password.");
       } else if (err.response && err.response.status === 404) {

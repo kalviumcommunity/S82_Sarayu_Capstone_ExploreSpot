@@ -57,6 +57,7 @@ router.post("/send-otp", async (req, res) => {
   }
 });
 
+
 // POST verify OTP
 router.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
