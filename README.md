@@ -114,5 +114,7 @@
  This project aims to create an engaging platform for travel enthusiasts while offering businesses an opportunity to reach their audience. By leveraging real-time weather data and seasonal recommendations, Explore Spot will provide users with meaningful travel insights. 
 
 
+
+
 ## Deploy Backend-server: https://s82-sarayu-capstone-explorespot.onrender.com
 ## Deploy Frontend-server: https://explorespot.netlify.app/
