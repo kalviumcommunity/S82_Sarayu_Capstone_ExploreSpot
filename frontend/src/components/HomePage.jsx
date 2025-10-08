@@ -56,6 +56,7 @@ const HomePage = () => {
         </Link>
       </header>
 
+
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center py-24 px-6 bg-gradient-to-r from-blue-400 to-purple-300 shadow-lg">
         <div className="bg-white/40 backdrop-blur-md rounded-3xl p-10 shadow-2xl max-w-2xl w-full">
@@ -68,6 +69,7 @@ const HomePage = () => {
               to="/explore"
               className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
             >
+              
               Explore Spots
             </Link>
             <Link
