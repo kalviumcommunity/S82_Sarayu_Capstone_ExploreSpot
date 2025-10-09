@@ -8,6 +8,7 @@ const ShareExperience = () => {
     location: "",
     description: "",
   });
+  
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
