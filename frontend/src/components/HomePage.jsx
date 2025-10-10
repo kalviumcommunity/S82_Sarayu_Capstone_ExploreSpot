@@ -39,9 +39,9 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800 font-sans relative">
+    <div className="min-h-screen text-gray-800 font-sans relative">
       {/* Top Right Login/Signup */}
-      <header className="absolute top-4 right-6 z-10 flex gap-4">
+      <header className="absolute top-4 right-6 z-20 flex gap-4">
         <Link
           to="/login"
           className="bg-white text-purple-600 border border-purple-600 px-4 py-2 rounded-full hover:bg-purple-100 transition"
@@ -56,20 +56,33 @@ const HomePage = () => {
         </Link>
       </header>
 
+      {/* Hero Section with background image */}
+      <section
+        className="flex flex-col items-center justify-center text-center py-24 px-6 relative"
+        style={{
+          backgroundImage:
+            "url('https://i.pinimg.com/1200x/0c/52/ae/0c52ae9947137589b5574a0a515bc451.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-black/30"></div>
 
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center py-24 px-6 bg-gradient-to-r from-blue-400 to-purple-300 shadow-lg">
-        <div className="bg-white/40 backdrop-blur-md rounded-3xl p-10 shadow-2xl max-w-2xl w-full">
-          <h1 className="text-5xl font-bold text-white mb-4">Welcome to Explore Spot</h1>
+        <div className="bg-white/40 backdrop-blur-md rounded-3xl p-10 shadow-2xl max-w-2xl w-full relative z-10">
+          <h1 className="text-5xl font-bold text-white mb-4">
+            Welcome to Explore Spot
+          </h1>
           <p className="text-lg text-white mb-8">
-            Discover hidden gems, share adventures, and connect with the best local businesses.
+            Discover hidden gems, share adventures, and connect with the best local
+            businesses.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/explore"
               className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
             >
-              
               Explore Spots
             </Link>
             <Link
@@ -89,7 +102,7 @@ const HomePage = () => {
       </section>
 
       {/* Featured Spots */}
-      <section className="py-16 px-8 bg-white">
+      <section className="py-16 px-8 bg-white/80">
         <h2 className="text-3xl font-bold text-center mb-10">Featured Spots</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {featuredSpots.map((spot, idx) => (
@@ -108,7 +121,7 @@ const HomePage = () => {
       </section>
 
       {/* Featured Businesses */}
-      <section className="py-16 px-8 bg-gray-100">
+      <section className="py-16 px-8 bg-white/80">
         <h2 className="text-3xl font-bold text-center mb-10">Featured Businesses</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {businesses.length > 0 ? (
