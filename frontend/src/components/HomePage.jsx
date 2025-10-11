@@ -56,6 +56,7 @@ const HomePage = () => {
         </Link>
       </header>
 
+
       {/* Hero Section with background image */}
       <section
         className="flex flex-col items-center justify-center text-center py-24 px-6 relative"
