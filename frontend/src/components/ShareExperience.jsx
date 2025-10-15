@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -8,9 +8,17 @@ const ShareExperience = () => {
     location: "",
     description: "",
   });
-  
+
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
+
+  // ✅ Redirect to login if not logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -46,10 +54,14 @@ const ShareExperience = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-300 via-purple-300 to-pink-200 flex items-center justify-center px-4 py-10">
       <div className="bg-white bg-opacity-80 backdrop-blur-lg rounded-3xl shadow-2xl p-10 max-w-xl w-full">
-        <h2 className="text-3xl font-bold text-center text-purple-800 mb-6">Share Your Experience</h2>
+        <h2 className="text-3xl font-bold text-center text-purple-800 mb-6">
+          Share Your Experience
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Your Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Your Name
+            </label>
             <input
               type="text"
               name="name"
@@ -60,7 +72,9 @@ const ShareExperience = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Location</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Location
+            </label>
             <input
               type="text"
               name="location"
@@ -71,7 +85,9 @@ const ShareExperience = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Experience Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Experience Description
+            </label>
             <textarea
               name="description"
               rows="4"
@@ -82,7 +98,9 @@ const ShareExperience = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Upload Image (optional)</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Image (optional)
+            </label>
             <input
               type="file"
               accept="image/*"
