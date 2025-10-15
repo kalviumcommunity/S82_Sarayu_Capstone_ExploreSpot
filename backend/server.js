@@ -19,7 +19,7 @@ app.use(cors({
 // Static folder to serve uploaded images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
+// ✅ ROUTES IMPORTS
 const authRoutes = require("./routes/auth");
 const otpRoutes = require("./routes/otpRoutes");
 const userRoutes = require("./routes/user");
@@ -27,7 +27,10 @@ const destinationRoutes = require("./routes/destination");
 const businessRoutes = require("./routes/business");
 const travelPostRoutes = require("./routes/travelpost");
 
-// Mount routes
+// ✅ ✅ NEW: Spots route (for ShareExperience.jsx)
+const spotsRoutes = require("./routes/spotsRoutes");
+
+// ✅ MOUNT ROUTES
 app.use("/api", authRoutes);
 app.use("/api2", otpRoutes);
 app.use("/api/users", userRoutes);
@@ -35,7 +38,10 @@ app.use("/api/destinations", destinationRoutes);
 app.use("/api/business", businessRoutes);
 app.use("/api/travelpost", travelPostRoutes);
 
-// Global Error Handler (keep at the end)
+// ✅ MOUNT the new spots route
+app.use("/spots", spotsRoutes);
+
+// ✅ Global Error Handler (keep at the end)
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({
     success: false,
@@ -43,7 +49,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to MongoDB and start server
+// ✅ Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

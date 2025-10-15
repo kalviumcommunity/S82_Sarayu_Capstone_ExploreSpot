@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ExploreSpots = () => {
   const [spots, setSpots] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login"); // redirect if not logged in
+      return;
+    }
+
     const fetchSpots = async () => {
       try {
-        const res = await api.get("/experiences");
+        const res = await axios.get("http://localhost:5000/api/experiences", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setSpots(res.data);
       } catch (err) {
         console.error("Error fetching experiences:", err);
+        // If token is invalid or expired, redirect to login
+        if (err.response && err.response.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
       }
     };
 
     fetchSpots();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
