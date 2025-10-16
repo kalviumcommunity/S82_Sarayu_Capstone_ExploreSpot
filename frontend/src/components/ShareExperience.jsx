@@ -68,6 +68,7 @@ const ShareExperience = () => {
               value={formData.name}
               onChange={handleChange}
               required
+          
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
           </div>
