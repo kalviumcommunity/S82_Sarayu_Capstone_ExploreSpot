@@ -19,6 +19,7 @@ function ForgotPassword() {
       setMessage("");
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 to-purple-200 text-white font-sans px-4">
