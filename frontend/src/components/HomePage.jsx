@@ -109,8 +109,11 @@ const HomePage = () => {
           {featuredSpots.map((spot, idx) => (
             <div
               key={idx}
+              
               className="bg-white shadow-xl rounded-xl overflow-hidden transition hover:scale-105"
+              
             >
+
               <img src={spot.image} alt={spot.name} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{spot.name}</h3>
