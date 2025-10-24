@@ -10,10 +10,12 @@ import ShareExperience from "./components/ShareExperience";
 import Thankyou from "./pages/Thankyou";
 import PromoteBusiness from "./components/PromoteBusiness";
 import ExploreSpot from "./components/ExploreSpot";
+import GoogleLogin from "./components/GoogleLogin"; // Import GoogleLogin
+import "./firebase"; // Import Firebase initialization
 
 function App() {
   return (
-    <Router> 
+    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -25,6 +27,7 @@ function App() {
         <Route path="/thank-you" element={<Thankyou />} />
         <Route path="/promote" element={<PromoteBusiness />} />
         <Route path="/explore" element={<ExploreSpot />} />
+        <Route path="/google-login" element={<GoogleLogin />} /> {/* Google login route */}
       </Routes>
     </Router>
   );
