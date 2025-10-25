@@ -12,14 +12,7 @@ const ShareExperience = () => {
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
-  // ✅ Redirect to login if not logged in
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
+  
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
