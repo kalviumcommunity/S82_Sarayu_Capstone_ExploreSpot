@@ -11,7 +11,6 @@ const ShareExperience = () => {
 
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
-
   
   const handleChange = (e) => {
     setFormData((prev) => ({
