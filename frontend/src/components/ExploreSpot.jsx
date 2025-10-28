@@ -12,7 +12,6 @@ const ExploreSpots = () => {
       <h1 className="text-4xl font-bold text-center mb-10 text-purple-800">
         Explore Shared Travel Experiences
       </h1>
-
       {spots.length === 0 ? (
         <p className="text-center text-gray-500">No experiences shared yet.</p>
       ) : (
@@ -39,5 +38,6 @@ const ExploreSpots = () => {
     </div>
   );
 };
+
 
 export default ExploreSpots;
