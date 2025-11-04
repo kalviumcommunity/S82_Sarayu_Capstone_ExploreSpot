@@ -1,0 +1,38 @@
+services:
+  backend:
+    build: ./backend
+    container_name: explore-spot-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongo
+    networks:
+      - explore-spot-network
+
+  frontend:
+    build: ./frontend
+    container_name: explore-spot-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - explore-spot-network
+
+  mongo:
+    image: mongo:latest
+    container_name: explore-spot-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - explore-spot-network
+
+volumes:
+  mongo-data:
+
+networks:
+  explore-spot-network:
