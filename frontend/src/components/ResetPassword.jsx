@@ -30,7 +30,7 @@ function ResetPassword({ email }) {
         className="w-full p-2 rounded bg-gray-700 text-white border"
       />
       <button type="submit" className="w-full bg-purple-600 p-2 rounded text-white">
-        Reset Password
+        Reset-Password
       </button>
     </form>
   );
