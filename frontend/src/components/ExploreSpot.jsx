@@ -6,7 +6,7 @@ const ExploreSpots = () => {
   const [spots, setSpots] = useState([]);
   const navigate = useNavigate();
 
-
+  
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
       <h1 className="text-4xl font-bold text-center mb-10 text-purple-800">
