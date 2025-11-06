@@ -17,6 +17,8 @@ function ForgotFlow() {
               setStep(2);
             }}
           />
+
+          
         )}
         {step === 2 && <EnterOTP email={email} onVerified={() => setStep(3)} />}
         {step === 3 && <ResetPassword email={email} />}
