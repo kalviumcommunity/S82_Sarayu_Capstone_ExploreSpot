@@ -52,7 +52,7 @@ function ForgotPassword() {
               }, 2000);
             }}
           >
-            Send OTP
+            Send-OTP
           </button>
         </form>
       </div>
