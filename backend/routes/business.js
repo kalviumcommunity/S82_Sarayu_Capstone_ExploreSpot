@@ -1,59 +1,50 @@
 const express = require("express");
 const router = express.Router();
 const Business = require("../model/business");
+const multer = require("multer");
+const path = require("path");
 
-// GET all businesses (populate user info)
+// Multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) =>
+    cb(null, Date.now() + path.extname(file.originalname)),
+});
+
+const upload = multer({ storage });
+
+// 🟢 GET all promoted businesses
 router.get("/", async (req, res) => {
   try {
-    const businesses = await Business.find().populate("createdBy", "username email"); // populate user fields
+    const businesses = await Business.find();
     res.json(businesses);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-
-// POST a new business (requires req.user.id from auth middleware)
-router.post("/", async (req, res) => {
-  const { name, type, location, contactInfo, imageUrl } = req.body;
-
+// 🟢 POST new business promotion
+router.post("/", upload.single("image"), async (req, res) => {
   try {
+    const { name, category, location, description, contact } = req.body;
+
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
     const business = new Business({
       name,
-      type,
+      category,
       location,
-      contactInfo,
+      description,
+      contactInfo: contact,
       imageUrl,
-      createdBy: req.user._id, 
     });
 
     await business.save();
+
     res.status(201).json(business);
   } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// PUT (update) a business listing
-router.put("/:id", async (req, res) => {
-  const { name, description, location, contactInfo, imageUrl } = req.body;
-
-  try {
-    const business = await Business.findById(req.params.id);
-    if (!business) {
-      return res.status(404).json({ message: "Business not found" });
-    }
-
-    business.name = name || business.name;
-    business.description = description || business.description;
-    business.location = location || business.location;
-    business.contactInfo = contactInfo || business.contactInfo;
-    business.imageUrl = imageUrl || business.imageUrl;
-
-    await business.save();
-    res.json({ data: business });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({ message: "Failed to create business" });
   }
 });
 

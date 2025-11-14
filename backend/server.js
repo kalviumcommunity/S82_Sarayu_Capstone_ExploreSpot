@@ -45,6 +45,7 @@ app.use("/api", authRoutes);
 app.use("/api2", otpRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/destinations", destinationRoutes);
+app.use("/uploads", express.static("uploads"));
 app.use("/api/business", businessRoutes);
 app.use("/api/travelpost", travelPostRoutes);
 
