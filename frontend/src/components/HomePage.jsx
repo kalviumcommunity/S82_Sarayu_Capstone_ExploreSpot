@@ -92,8 +92,8 @@ const HomePage = () => {
             >
               Share Experience
             </Link>
-            <Link
-              to="/"
+            <Link 
+              to="/get-hotels"
               className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
             >
               Get Hotels
@@ -161,7 +161,10 @@ const HomePage = () => {
           >
             Promote Your Business
           </Link>
+
         </div>
+        <div className="h-16"></div>
+        
       </section>
     </div>
   );
