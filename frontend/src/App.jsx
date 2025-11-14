@@ -28,7 +28,7 @@ function App() {
         <Route path="/thank-you" element={<Thankyou />} />
         <Route path="/promote" element={<PromoteBusiness />} />
         <Route path="/explore" element={<ExploreSpot />} />
-        <Route path="/hotels" element={<GetHotels />} />
+        <Route path="/get-hotels" element={<GetHotels />} />
 
         <Route path="/google-login" element={<GoogleLogin />} /> {/* Google login route */}
       </Routes>

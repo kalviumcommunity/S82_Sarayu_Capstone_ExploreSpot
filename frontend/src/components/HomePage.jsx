@@ -149,7 +149,7 @@ const HomePage = () => {
             ))
           ) : (
             <p className="text-center text-gray-500 col-span-3">
-              No businesses submitted yet.
+            
             </p>
           )}
         </div>
