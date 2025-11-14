@@ -1,179 +1,78 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
-import { auth, provider } from "../firebase";
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { Link, useNavigate } from "react-router-dom";
+import GoogleLogin from "./GoogleLogin";
 
-const LoginPage = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState(""); // ✅ Success message for forgot password
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
-    setMessage("");
     try {
-      const response = await axios.post("http://localhost:5000/api/login", form, {
-        withCredentials: true,
-      });
-      if (response.data.token && response.data.name) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userName", response.data.name);
-        navigate("/");
-      } else {
-        setError("Invalid email or password.");
-      }
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/"); // redirect after login
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong. Try again.");
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const name = result.user.displayName;
-      localStorage.setItem("userName", name);
-      navigate("/");
-    } catch (error) {
-      console.error("Google login error:", error);
-      alert("Google login failed");
-    }
-  };
-
-  // ✅ Forgot password handler
-  const handleForgotPassword = async () => {
-    const email = prompt("Please enter your registered email:");
-    if (!email) return;
-    try {
-      await sendPasswordResetEmail(auth, email);
-      setMessage("Password reset email sent! Check your inbox.");
-      setError("");
-    } catch (err) {
-      console.error("Reset password error:", err);
-      setError("Failed to send password reset email. Please check your email.");
+      setError(err.message);
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <div
-        style={{
-          width: "400px",
-          padding: "30px",
-          backgroundColor: "#f4f4f4",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
-        }}
-      >
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Login</h2>
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="bg-gray-900 p-8 rounded-xl w-full max-w-md text-white">
+        <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
 
-        {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
-        {message && <p style={{ color: "green", fontWeight: "bold" }}>{message}</p>}
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              className="w-full p-2 bg-gray-800 rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-        >
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-            style={{
-              padding: "12px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-            }}
-          />
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Password"
-            required
-            style={{
-              padding: "12px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-            }}
-          />
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              className="w-full p-2 bg-gray-800 rounded"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-          {/* ✅ Forgot Password link */}
-          <p
-            onClick={handleForgotPassword}
-            style={{
-              textAlign: "right",
-              color: "#007BFF",
-              cursor: "pointer",
-              margin: "0",
-              fontSize: "14px",
-            }}
-          >
-            Forgot Password?
-          </p>
+          {error && <p className="text-red-400 text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            style={{
-              padding: "12px",
-              borderRadius: "5px",
-              backgroundColor: "#8EC5FC",
-              color: "white",
-              fontWeight: "bold",
-              cursor: "pointer",
-              border: "none",
-            }}
-          >
+          <button className="w-full bg-blue-600 py-2 rounded-lg font-bold">
             Login
           </button>
         </form>
 
-        <p style={{ textAlign: "center", margin: "10px 0" }}>OR</p>
+        <GoogleLogin />
 
-        <button
-          onClick={handleGoogleLogin}
-          style={{
-            padding: "12px",
-            borderRadius: "5px",
-            backgroundColor: "#4285F4",
-            color: "white",
-            fontWeight: "bold",
-            cursor: "pointer",
-            border: "none",
-            width: "100%",
-          }}
-        >
-          Login with Google
-        </button>
+        <p className="text-center mt-4 text-gray-400">
+          Forgot password?{" "}
+          <Link to="/forgot-password" className="text-blue-400">
+            Reset
+          </Link>
+        </p>
 
-        <p style={{ marginTop: "10px", textAlign: "center" }}>
+        <p className="text-center mt-4 text-gray-400">
           Don’t have an account?{" "}
-          <span
-            style={{ color: "#007BFF", cursor: "pointer" }}
-            onClick={() => navigate("/signup")}
-          >
-            Sign up
-          </span>
+          <Link to="/signup" className="text-green-400">
+            Register
+          </Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default Login;
