@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-0
+import axios from "axios";
+
 const PromoteBusiness = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -37,14 +38,16 @@ const PromoteBusiness = () => {
     }
 
     try {
-      await api.post("/promotions", data, {
+      await axios.post("http://localhost:5000/api/business", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
       navigate("/thank-you");
     } catch (error) {
       console.error("Failed to promote business:", error);
+      alert("Failed to submit business promotion");
     }
   };
 
