@@ -203,7 +203,7 @@ const ExploreSpot = () => {
           ))
         ) : (
           <p className="text-center text-gray-600 col-span-3">
-            No matching results.
+          
           </p>
         )}
       </div>
