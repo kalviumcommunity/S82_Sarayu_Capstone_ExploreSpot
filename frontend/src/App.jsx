@@ -14,6 +14,8 @@ import GoogleLogin from "./components/GoogleLogin";
 import GetHotels from "./components/GetHotels";
 import "./firebase"; 
 
+
+
 function App() {
   return (
     <Router>
@@ -29,6 +31,9 @@ function App() {
         <Route path="/promote" element={<PromoteBusiness />} />
         <Route path="/explore" element={<ExploreSpot />} />
         <Route path="/get-hotels" element={<GetHotels />} />
+
+
+
 
         <Route path="/google-login" element={<GoogleLogin />} /> {/* Google login route */}
       </Routes>
