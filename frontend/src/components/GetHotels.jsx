@@ -10,7 +10,7 @@ const GetHotels = () => {
       try {
         const res = await axios.get("http://localhost:5000/api/business");
 
-        // Filter to show only Hotels
+        // Filter only Hotels
         const hotelsOnly = res.data.filter(
           (biz) =>
             biz.category &&
@@ -51,17 +51,22 @@ const GetHotels = () => {
         />
       </div>
 
-      {/* HOTELS GRID */}
+      {/* IF NO RESULTS */}
       {filteredHotels.length === 0 ? (
-        <p className="text-center text-gray-600 text-lg mt-10">
-        </p>
+        <div className="flex justify-center mt-20">
+          <p className="text-center text-gray-600 text-xl font-semibold bg-white/70 px-6 py-4 rounded-xl shadow">
+            ❌ No matching hotels found
+          </p>
+        </div>
       ) : (
+        /* HOTELS GRID */
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           {filteredHotels.map((biz) => (
             <div
               key={biz._id}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
             >
+              {/* Image */}
               <img
                 src={
                   biz.imageUrl
@@ -72,6 +77,7 @@ const GetHotels = () => {
                 className="w-full h-52 object-cover"
               />
 
+              {/* Hotel Content */}
               <div className="p-5">
                 <h2 className="text-xl font-bold text-purple-700">{biz.name}</h2>
                 <p className="text-purple-600 font-medium">{biz.category}</p>

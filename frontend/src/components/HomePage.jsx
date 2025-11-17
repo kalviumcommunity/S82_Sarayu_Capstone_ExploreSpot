@@ -40,6 +40,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen text-gray-800 font-sans relative">
+      
       {/* Top Right Login/Signup */}
       <header className="absolute top-4 right-6 z-20 flex gap-4">
         <Link
@@ -56,8 +57,7 @@ const HomePage = () => {
         </Link>
       </header>
 
-
-      {/* Hero Section with background image */}
+      {/* Hero Section */}
       <section
         className="flex flex-col items-center justify-center text-center py-24 px-6 relative"
         style={{
@@ -68,7 +68,6 @@ const HomePage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Overlay for readability */}
         <div className="absolute inset-0 bg-black/30"></div>
 
         <div className="bg-white/40 backdrop-blur-md rounded-3xl p-10 shadow-2xl max-w-2xl w-full relative z-10">
@@ -79,28 +78,41 @@ const HomePage = () => {
             Discover hidden gems, share adventures, and connect with the best local
             businesses.
           </p>
+
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              to="/explore"
-              className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
-            >
+            <Link to="/explore" className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition">
               Explore Spots
             </Link>
-            <Link
-              to="/share"
-              className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
-            >
+            <Link to="/share" className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition">
               Share Experience
             </Link>
-            <Link 
-              to="/get-hotels"
-              className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition"
-            >
+            <Link to="/get-hotels" className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition">
               Get Hotels
             </Link>
           </div>
         </div>
       </section>
+      {/* ⭐ PLAIN SMART TOOLS SECTION */}
+      <section className="py-20 px-8 bg-white text-gray-800 border-b shadow-md">
+        <h2 className="text-5xl font-extrabold text-center mb-6 text-purple-800">
+          Smart Tools ✨
+        </h2>
+
+        <p className="text-center text-lg max-w-2xl mx-auto mb-12 text-gray-600">
+          Your smart travel assistant — plan trips, check weather, and find the best stays instantly.
+        </p>
+
+        <div className="flex justify-center">
+          <Link
+            to="/smart-tools"
+            className="bg-purple-600 text-white font-bold px-8 py-4 rounded-full shadow-lg 
+            hover:bg-purple-700 hover:shadow-xl transition transform hover:scale-105"
+          >
+            Explore Smart Tools →
+          </Link>
+        </div>
+      </section>
+
 
       {/* Featured Spots */}
       <section className="py-16 px-8 bg-white/80">
@@ -109,11 +121,8 @@ const HomePage = () => {
           {featuredSpots.map((spot, idx) => (
             <div
               key={idx}
-              
               className="bg-white shadow-xl rounded-xl overflow-hidden transition hover:scale-105"
-              
             >
-
               <img src={spot.image} alt={spot.name} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{spot.name}</h3>
@@ -148,9 +157,7 @@ const HomePage = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500 col-span-3">
-            
-            </p>
+            <p className="text-center text-gray-500 col-span-3"></p>
           )}
         </div>
 
@@ -161,10 +168,9 @@ const HomePage = () => {
           >
             Promote Your Business
           </Link>
-
         </div>
-        <div className="h-16"></div>
-        
+
+       
       </section>
     </div>
   );
