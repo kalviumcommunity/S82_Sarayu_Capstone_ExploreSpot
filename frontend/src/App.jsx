@@ -12,6 +12,10 @@ import PromoteBusiness from "./components/PromoteBusiness";
 import ExploreSpot from "./components/ExploreSpot";
 import GoogleLogin from "./components/GoogleLogin";
 import GetHotels from "./components/GetHotels";
+import SmartTools from "./components/SmartTolls";
+import AITripPlanner from "./components/AITripPlanner";
+import WeatherChecker from "./components/WeatherChecker";
+import NearbyHotels from "./components/NearbyHotels";
 import "./firebase"; 
 
 
@@ -31,6 +35,11 @@ function App() {
         <Route path="/promote" element={<PromoteBusiness />} />
         <Route path="/explore" element={<ExploreSpot />} />
         <Route path="/get-hotels" element={<GetHotels />} />
+        <Route path="/smart-tools" element={<SmartTools />} />
+        <Route path="/ai-trip-planner" element={<AITripPlanner />} />
+       <Route path="/weather" element={<WeatherChecker />} />
+        <Route path="/hotels-nearby" element={<NearbyHotels />} />
+
 
 
 

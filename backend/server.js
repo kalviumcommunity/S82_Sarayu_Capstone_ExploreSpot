@@ -40,6 +40,7 @@ const travelPostRoutes = require("./routes/travelpost");
 // 🟢 NEW: Spots route (for ShareExperience.jsx)
 const spotsRoutes = require("./routes/spotsRoutes");
 
+
 // ROUTE MOUNTING
 app.use("/api", authRoutes);
 app.use("/api2", otpRoutes);
