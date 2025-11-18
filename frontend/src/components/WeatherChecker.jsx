@@ -5,7 +5,7 @@ const WeatherChecker = () => {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
 
-  const API_KEY = "8022577be8153386445f4e290059bdf9"; // your API key
+  const API_KEY = "8022577be8153386445f4e290059bdf9"; 
 
   const handleCheckWeather = async () => {
     if (!city.trim()) {
