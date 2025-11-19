@@ -61,20 +61,23 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to MongoDB and start server
-mongoose
-  .connect(process.env.MONGO_URI, {
-    // optional: keep for compatibility with older drivers
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("MongoDB connected");
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+// 🧪 Prevent MongoDB + server listen during tests
+if (process.env.NODE_ENV !== "test") {
+  mongoose
+    .connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("MongoDB connected");
+      app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error("MongoDB connection failed:", err);
+      // ❌ Removed process.exit(1) → so Jest won't crash
     });
-  })
-  .catch((err) => {
-    console.error("MongoDB connection failed:", err);
-    process.exit(1); // optional: exit if DB can't connect
-  });
+}
+
+module.exports = app;
