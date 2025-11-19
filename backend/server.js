@@ -9,6 +9,7 @@ const fs = require("fs");
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(express.json());
@@ -19,42 +20,41 @@ app.use(
   })
 );
 
-// 🟢 Auto-create uploads folder if missing
+// Auto-create uploads folder if missing
 const uploadPath = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath);
+  fs.mkdirSync(uploadPath, { recursive: true });
   console.log("📂 'uploads' folder created automatically.");
 }
 
-// 🟢 Static folder to serve uploaded images
+// Static folder to serve uploaded images
 app.use("/uploads", express.static(uploadPath));
 
-// ✅ ROUTES IMPORTS
+// ROUTES IMPORTS
 const authRoutes = require("./routes/auth");
 const otpRoutes = require("./routes/otpRoutes");
 const userRoutes = require("./routes/user");
 const destinationRoutes = require("./routes/destination");
 const businessRoutes = require("./routes/business");
 const travelPostRoutes = require("./routes/travelpost");
-
-// 🟢 NEW: Spots route (for ShareExperience.jsx)
 const spotsRoutes = require("./routes/spotsRoutes");
-
+const aiPlanner = require("./routes/aiPlanner");
 
 // ROUTE MOUNTING
 app.use("/api", authRoutes);
 app.use("/api2", otpRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/destinations", destinationRoutes);
-app.use("/uploads", express.static("uploads"));
 app.use("/api/business", businessRoutes);
 app.use("/api/travelpost", travelPostRoutes);
+app.use("/api/ai-planner", aiPlanner);
 
-// 🟢 MOUNT the new spots route
+// Mount the spots route (ShareExperience)
 app.use("/spots", spotsRoutes);
 
 // GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {
+  console.error("Global error handler:", err);
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
@@ -63,13 +63,18 @@ app.use((err, req, res, next) => {
 
 // Connect to MongoDB and start server
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    // optional: keep for compatibility with older drivers
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("MongoDB connected");
-    app.listen(process.env.PORT, () => {
-      console.log(`Server running on http://localhost:${process.env.PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("MongoDB connection failed", err);
+    console.error("MongoDB connection failed:", err);
+    process.exit(1); // optional: exit if DB can't connect
   });
