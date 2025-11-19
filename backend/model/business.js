@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const BusinessSchema = new mongoose.Schema({
-  name: String,
-  category: String,
+const businessSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true, // 👈 This is important
+  },
   location: String,
   description: String,
-  contactInfo: String,
-  imageUrl: String,
 });
 
-module.exports = mongoose.model("Business", BusinessSchema);
+module.exports = mongoose.model("Business", businessSchema);
