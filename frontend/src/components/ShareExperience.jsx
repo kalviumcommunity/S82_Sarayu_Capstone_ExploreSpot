@@ -11,6 +11,8 @@ const ShareExperience = () => {
 
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loadingDesc, setLoadingDesc] = useState(false);
+  const [descError, setDescError] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,10 +27,42 @@ const ShareExperience = () => {
     const selected = e.target.files[0];
     setFile(selected);
 
-    // Show preview image
     if (selected) {
       setPreview(URL.createObjectURL(selected));
     }
+  };
+
+  // ⭐ AI Generate Description Handler
+  const handleGenerateDescription = async () => {
+    if (!formData.location) {
+      setDescError("Please enter a location first!");
+      return;
+    }
+
+    setDescError("");
+    setLoadingDesc(true);
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/ai/describe-spot", {
+        location: formData.location,
+        days: 3,
+        mood: "fun adventurous travel tone",
+      });
+
+      if (res.data?.description) {
+        setFormData((prev) => ({
+          ...prev,
+          description: res.data.description,
+        }));
+      } else {
+        setDescError("No response from AI. Try again.");
+      }
+    } catch (error) {
+      console.error("AI description error:", error);
+      setDescError("Failed to generate description.");
+    }
+
+    setLoadingDesc(false);
   };
 
   const handleSubmit = async (e) => {
@@ -39,15 +73,10 @@ const ShareExperience = () => {
     data.append("location", formData.location);
     data.append("description", formData.description);
 
-    if (file) {
-      data.append("image", file); // MUST match upload.single("image")
-    }
+    if (file) data.append("image", file);
 
     try {
-      await axios.post("http://localhost:5000/spots", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
+      await axios.post("http://localhost:5000/spots", data);
       navigate("/thank-you");
     } catch (error) {
       console.error("Error uploading experience:", error);
@@ -64,7 +93,7 @@ const ShareExperience = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-
+          
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -76,7 +105,7 @@ const ShareExperience = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400"
             />
           </div>
 
@@ -91,7 +120,7 @@ const ShareExperience = () => {
               value={formData.location}
               onChange={handleChange}
               required
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400"
             />
           </div>
 
@@ -106,8 +135,24 @@ const ShareExperience = () => {
               value={formData.description}
               onChange={handleChange}
               required
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-400"
             />
+
+            {/* ✨ AI GENERATE BUTTON */}
+            <div className="flex items-center gap-3 mt-2">
+              <button
+                type="button"
+                className="text-sm bg-purple-600 text-white px-3 py-1 rounded-full hover:bg-purple-700"
+                onClick={handleGenerateDescription}
+                disabled={loadingDesc}
+              >
+                {loadingDesc ? "Generating..." : "✨ Generate with AI"}
+              </button>
+
+              {descError && (
+                <span className="text-xs text-red-500">{descError}</span>
+              )}
+            </div>
           </div>
 
           {/* Image Upload */}
@@ -119,13 +164,10 @@ const ShareExperience = () => {
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl text-gray-700 
-              file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 
-              file:bg-purple-500 file:text-white hover:file:bg-purple-600"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl"
             />
           </div>
 
-          {/* Image Preview */}
           {preview && (
             <img
               src={preview}
@@ -137,7 +179,7 @@ const ShareExperience = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 rounded-full font-semibold transition duration-200"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-full font-semibold"
           >
             Submit Experience
           </button>

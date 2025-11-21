@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/core": "^1.0.6",
+    "@langchain/openai": "^1.1.2",
     "axios": "^1.13.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
