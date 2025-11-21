@@ -7,23 +7,23 @@ const SmartTools = () => {
       title: "AI Trip Planner",
       desc: "Get a full AI-generated itinerary based on your destination, days & budget.",
       icon: "🤖",
-      link: "/ai-trip-planner",
-      color: "from-purple-500 to-pink-500"
+      link: "/trip-planner",
+      color: "from-purple-500 to-pink-500",
     },
     {
       title: "Live Weather Checker",
       desc: "Check real-time temperature, humidity & conditions for any city.",
       icon: "⛅",
       link: "/weather",
-      color: "from-blue-500 to-teal-400"
+      color: "from-blue-500 to-teal-400",
     },
     {
       title: "Nearby Hotels",
       desc: "Find the best hotel recommendations near your travel location.",
       icon: "🏨",
       link: "/get-hotels",
-      color: "from-yellow-500 to-orange-500"
-    }
+      color: "from-yellow-500 to-orange-500",
+    },
   ];
 
   return (

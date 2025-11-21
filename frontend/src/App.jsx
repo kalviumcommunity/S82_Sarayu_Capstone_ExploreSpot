@@ -17,6 +17,7 @@ import AITripPlanner from "./components/AITripPlanner";
 import WeatherChecker from "./components/WeatherChecker";
 import NearbyHotels from "./components/NearbyHotels";
 import "./firebase"; 
+import TripPlanner from "./pages/TripPlanner";
 
 
 
@@ -39,6 +40,10 @@ function App() {
         <Route path="/ai-trip-planner" element={<AITripPlanner />} />
        <Route path="/weather" element={<WeatherChecker />} />
         <Route path="/hotels-nearby" element={<NearbyHotels />} />
+        
+        <Route path="/trip-planner" element={<TripPlanner />} />
+
+
 
 
 

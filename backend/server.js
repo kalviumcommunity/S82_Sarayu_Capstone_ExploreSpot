@@ -39,6 +39,8 @@ const businessRoutes = require("./routes/business");
 const travelPostRoutes = require("./routes/travelpost");
 const spotsRoutes = require("./routes/spotsRoutes");
 const aiPlanner = require("./routes/aiPlanner");
+const aiDescriptionRoutes = require("./routes/aiDescription");
+
 
 // ROUTE MOUNTING
 app.use("/api", authRoutes);
@@ -48,6 +50,8 @@ app.use("/api/destinations", destinationRoutes);
 app.use("/api/business", businessRoutes);
 app.use("/api/travelpost", travelPostRoutes);
 app.use("/api/ai-planner", aiPlanner);
+app.use("/api/ai", aiDescriptionRoutes); // 👈 add this
+
 
 // Mount the spots route (ShareExperience)
 app.use("/spots", spotsRoutes);
