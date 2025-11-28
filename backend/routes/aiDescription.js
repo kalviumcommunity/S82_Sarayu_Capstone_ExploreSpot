@@ -21,7 +21,7 @@ router.post("/describe-spot", async (req, res) => {
 
     const llm = new ChatOpenAI({
       apiKey,
-model: "llama-3.3-70b-versatile",
+      model: "llama-3.3-70b-versatile",
       temperature: 0.7,
       configuration: {
         baseURL: "https://api.groq.com/openai/v1"
