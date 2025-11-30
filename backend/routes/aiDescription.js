@@ -30,9 +30,9 @@ router.post("/describe-spot", async (req, res) => {
 
     const prompt = ChatPromptTemplate.fromTemplate(
       `Write a short travel description for {location}.
-- Tone: {mood}
-- Duration: {days} days
-3–5 sentences. Plain text only.`
+     - Tone: {mood}
+    - Duration: {days} days
+    3–5 sentences. Plain text only.`
     );
 
     const chain = prompt.pipe(llm).pipe(new StringOutputParser());
