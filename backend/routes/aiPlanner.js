@@ -1,4 +1,3 @@
-// routes/aiPlanner.js
 const express = require("express");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
@@ -7,40 +6,69 @@ const NodeCache = require("node-cache");
 const router = express.Router();
 const cache = new NodeCache({ stdTTL: 600 });
 
-// Rate limit (10/min)
-router.use(rateLimit({
-  windowMs: 60 * 1000,
-  max: 10,
-  message: { error: "Too many requests. Try again later." }
-}));
+// --------------------
+// RATE LIMIT
+// --------------------
+router.use(
+  rateLimit({
+    windowMs: 60 * 1000,
+    max: 10,
+    message: { error: "Too many requests. Try again later." }
+  })
+);
 
-// -----------------------------------------
+// --------------------
 // MAIN ENDPOINT
-// -----------------------------------------
+// --------------------
 router.post("/test", async (req, res) => {
   try {
     const { destination, days, budget, preferences } = req.body;
 
-    if (!destination || !days) {
-      return res.status(400).json({ error: "Destination and days are required!" });
+    // ✅ STRICT INPUT VALIDATION
+    if (!destination || typeof destination !== "string") {
+      return res.status(400).json({ error: "Destination is required" });
     }
 
-    const cacheKey = `${destination}-${days}-${budget}-${preferences}`;
+    if (!days || isNaN(days) || Number(days) <= 0) {
+      return res.status(400).json({ error: "Days must be a positive number" });
+    }
+
+    // ✅ NORMALIZE INPUT
+    const normalized = {
+      destination: destination.trim(),
+      days: Number(days),
+      budget: budget ? Number(budget) : undefined,
+      preferences: preferences?.trim()
+    };
+
+    // ✅ SAFE CACHE KEY
+    const cacheKey = JSON.stringify(normalized);
     const cached = cache.get(cacheKey);
-    if (cached) return res.json({ ...cached, cached: true });
+    if (cached) {
+      return res.json({ ...cached, cached: true });
+    }
 
-    const prompt = buildPrompt({ destination, days, budget, preferences });
+    const prompt = buildPrompt(normalized);
 
-    // 🔥 We now call GROQ, NOT Gemini
+    // ✅ CALL GROQ
     const responseText = await callGroq(prompt);
 
     const parsed = safeJsonParse(responseText);
-    cache.set(cacheKey, parsed);
 
+    // ❌ IF AI BREAKS JSON → FAIL FAST
+    if (!parsed.itinerary || !Array.isArray(parsed.itinerary)) {
+      console.error("❌ INVALID AI OUTPUT:", responseText);
+      return res.status(500).json({
+        error: "AI returned invalid format"
+      });
+    }
+
+    cache.set(cacheKey, parsed);
     res.json(parsed);
 
   } catch (err) {
-    console.error("🔥 AI Error:", err.response?.data || err.message);
+    console.error("🔥 AI ERROR:", err.response?.data || err.message);
+
     res.status(500).json({
       error: "Failed to generate trip itinerary",
       details: err.response?.data || err.message
@@ -48,13 +76,17 @@ router.post("/test", async (req, res) => {
   }
 });
 
-// -----------------------------------------
+// --------------------
 // PROMPT BUILDER
-// -----------------------------------------
+// --------------------
 function buildPrompt({ destination, days, budget, preferences }) {
   return `
-Generate a detailed travel itinerary in VALID JSON ONLY.
+You are a STRICT JSON API.
+Output ONLY valid JSON.
+NO explanations.
+NO markdown.
 
+Schema:
 {
   "summary": string,
   "itinerary": [
@@ -76,50 +108,64 @@ Generate a detailed travel itinerary in VALID JSON ONLY.
   "budgetEstimate": string
 }
 
-User Input:
+Input:
 Destination: ${destination}
-Total Days: ${days}
+Days: ${days}
 Budget: ${budget || "Not specified"}
 Preferences: ${preferences || "None"}
 
-Return ONLY valid JSON.
+Return ONLY JSON.
 `;
 }
 
-// -----------------------------------------
-// JSON PARSER
-// -----------------------------------------
+// --------------------
+// SAFE JSON PARSER
+// --------------------
 function safeJsonParse(text) {
   try {
     const start = text.indexOf("{");
     const end = text.lastIndexOf("}");
-
-    if (start >= 0 && end > start) {
+    if (start !== -1 && end !== -1) {
       return JSON.parse(text.slice(start, end + 1));
     }
-  } catch (error) {
-    console.log("⚠ JSON Parse Failed");
+  } catch (err) {
+    console.error("⚠ JSON PARSE FAILED");
   }
-  return { raw: text };
+  return {};
 }
 
-// -----------------------------------------
-// GROQ API CALL (WORKING)
-// -----------------------------------------
+// --------------------
+// GROQ API CALL
+// --------------------
 async function callGroq(prompt) {
   const apiKey = process.env.GROQ_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("GROQ_API_KEY not set");
+  }
 
   const response = await axios.post(
     "https://api.groq.com/openai/v1/chat/completions",
     {
       model: "llama-3.3-70b-versatile",
-      messages: [{ role: "user", content: prompt }]
+      temperature: 0,
+      messages: [
+        {
+          role: "system",
+          content: "You are a JSON-only response generator."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ]
     },
     {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json"
-      }
+      },
+      timeout: 20000
     }
   );
 
