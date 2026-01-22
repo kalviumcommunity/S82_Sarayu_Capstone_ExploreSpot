@@ -1,495 +1,177 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-// Icons - import only what you actually use
-import { 
-  MapPin, 
-  Star, 
-  ChevronRight, 
-  Sparkles,
-  TrendingUp,
-  Users,
-  Globe,
-  Hotel,
-  Compass,
-  Cloud,
-  Navigation,
-  Clock,
-  CheckCircle,
-  Heart,
-  AlertTriangle,
-  Play
-} from "lucide-react";
-
-// Move constants outside component
-const FEATURED_SPOTS = [
-  {
-    id: 1,
-    name: "Snowy Peaks",
-    location: "Swiss Alps, Switzerland",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    rating: 4.9,
-    category: "Adventure"
-  },
-  {
-    id: 2,
-    name: "Azure Coast",
-    location: "Phuket, Thailand",
-    image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    rating: 4.7,
-    category: "Beach"
-  },
-  {
-    id: 3,
-    name: "Historic Charm",
-    location: "Rome, Italy",
-    image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    rating: 4.8,
-    category: "Culture"
-  }
-];
-
-const SMART_FEATURES = [
-  {
-    icon: <Cloud className="w-5 h-5" />,
-    title: "Live Weather",
-    description: "Real-time forecasts",
-    color: "bg-blue-100 text-blue-600"
-  },
-  {
-    icon: <Hotel className="w-5 h-5" />,
-    title: "Smart Booking",
-    description: "Best hotel deals",
-    color: "bg-purple-100 text-purple-600"
-  },
-  {
-    icon: <Navigation className="w-5 h-5" />,
-    title: "AI Itinerary",
-    description: "Personalized plans",
-    color: "bg-pink-100 text-pink-600"
-  },
-  {
-    icon: <Clock className="w-5 h-5" />,
-    title: "Peak Time Alert",
-    description: "Avoid crowds",
-    color: "bg-amber-100 text-amber-600"
-  }
-];
-
 const HomePage = () => {
   const [businesses, setBusinesses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
+  const featuredSpots = [
+    {
+      name: "Snowy Peaks",
+      location: "Switzerland",
+      image:
+        "https://imgs.search.brave.com/pCGLwHQ0qCOLs0aXRstvHpurt1EDyZChGpcOHp71yMg/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9yZXMu/Y2xvdWRpbmFyeS5j/b20vaHQ0bXI3ZGpr/L2ltYWdlL3VwbG9h/ZC9mX3dlYnAvZl93/ZWJwL3YxNjg3NzAw/NDI1L0FwcCUyMEFz/c2V0cy9XZVNraSUy/MGd1aWRlcy9za2kt/c2Vhc29uLW9wZW5p/bmctY2xvc2luZy1k/YXRlcy5qcGc",
+    },
+    {
+      name: "Sunny Beach",
+      location: "Thailand",
+      image:
+        "https://imgs.search.brave.com/QrVfoER2s1DEMlFD_7_TA18H41ZLYFXM8WW2RX5Z1zM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/dGhhaWxhbmQtYmVh/Y2guanBnP3dpZHRo/PTEwMDAmZm9ybWF0/PXBqcGcmZXhpZj0w/JmlwdGM9MA",
+    },
+    {
+      name: "Historic City",
+      location: "Italy",
+      image:
+        "https://imgs.search.brave.com/b4dL4DH3xCpOUol1MqUL-cJMxsze7F12YPsDbjrTFt0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAwLzM3LzA0LzU1/LzM2MF9GXzM3MDQ1/NTkwXzdvV0RHdXh3/YmxHbFZ6cjlmZnV4/TjhPZ0l4bXFMUENK/LmpwZw",
+    },
+  ];
 
   useEffect(() => {
+    const fetchBusinesses = async () => {
+      try {
+        const res = await api.get("/businesses");
+        setBusinesses(res.data);
+      } catch (error) {
+        console.error("Failed to fetch businesses:", error);
+      }
+    };
+
     fetchBusinesses();
   }, []);
 
-  const fetchBusinesses = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get("/businesses");
-      setBusinesses(response.data);
-    } catch (err) {
-      console.error("Error fetching businesses:", err);
-      setError("Unable to load businesses. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-                <Compass className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">ExploreSpot</span>
-            </Link>
-            
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="text-gray-700 hover:text-purple-600 px-4 py-2"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/signup"
-                className="bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-purple-700"
-              >
-                Get Started
-              </Link>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen text-gray-800 font-sans relative bg-gray-50">
+      
+      {/* Top Right Login/Signup */}
+      <header className="absolute top-4 right-6 z-20 flex gap-4">
+        <Link
+          to="/login"
+          className="bg-white text-purple-600 border border-purple-600 px-4 py-2 rounded-full hover:bg-purple-100 transition"
+        >
+          Login
+        </Link>
+        <Link
+          to="/signup"
+          className="bg-white text-purple-600 border border-purple-600 px-4 py-2 rounded-full hover:bg-purple-100 transition"
+        >
+          Signup
+        </Link>
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-50 to-pink-50 py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm mb-6">
-              <Sparkles className="w-4 h-4 text-purple-500 mr-2" />
-              <span className="text-sm font-medium text-purple-700">
-                Discover Your Next Adventure
-              </span>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Find Hidden Gems & Local Experiences
-            </h1>
-            
-            <p className="text-lg text-gray-600 mb-10">
-              Connect with verified local businesses and plan your perfect trip with smart tools.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link
-                to="/explore"
-                className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 flex items-center justify-center"
-              >
-                Start Exploring
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </Link>
-              <Link
-                to="/how-it-works"
-                className="bg-white text-gray-800 px-8 py-3 rounded-lg font-semibold border border-gray-300 hover:border-purple-400 flex items-center justify-center"
-              >
-                <Play className="w-5 h-5 mr-2" />
-                How It Works
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">10K+</div>
-                <div className="text-sm text-gray-500">Spots</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-pink-600">500+</div>
-                <div className="text-sm text-gray-500">Experts</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">95%</div>
-                <div className="text-sm text-gray-500">Rating</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">24/7</div>
-                <div className="text-sm text-gray-500">Support</div>
-              </div>
-            </div>
+      <section
+        className="flex flex-col items-center justify-center text-center py-24 px-6 relative"
+        style={{
+          backgroundImage:
+            "url('https://i.pinimg.com/1200x/0c/52/ae/0c52ae9947137589b5574a0a515bc451.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/30"></div>
+
+        <div className="bg-white/40 backdrop-blur-md rounded-3xl p-10 shadow-2xl max-w-2xl w-full relative z-10">
+          <h1 className="text-5xl font-bold text-white mb-4">
+            Welcome to Explore Spot
+          </h1>
+          <p className="text-lg text-white mb-8">
+            Discover hidden gems, share adventures, and connect with the best local
+            businesses.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/explore" className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition">
+              Explore Spots
+            </Link>
+            <Link to="/share" className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition">
+              Share Experience
+            </Link>
+            <Link to="/get-hotels" className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-full transition">
+              Get Hotels
+            </Link>
           </div>
         </div>
       </section>
+      {/* ⭐ PLAIN SMART TOOLS SECTION */}
+      <section className="py-20 px-8 bg-white text-gray-800 border-b shadow-md">
+        <h2 className="text-5xl font-extrabold text-center mb-6 text-purple-800">
+          Smart Tools ✨
+        </h2>
 
-      {/* Smart Tools */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Smart Travel Tools
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Make planning easier with our intelligent features
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {SMART_FEATURES.map((feature, index) => (
+        <p className="text-center text-lg max-w-2xl mx-auto mb-12 text-gray-600">
+          Your smart travel assistant — plan trips, check weather, and find the best stays instantly.
+        </p>
+
+        <div className="flex justify-center">
+          <Link
+            to="/smart-tools"
+            className="bg-purple-600 text-white font-bold px-8 py-4 rounded-full shadow-lg 
+            hover:bg-purple-700 hover:shadow-xl transition transform hover:scale-105"
+          >
+            Explore Smart Tools →
+          </Link>
+        </div>
+      </section>
+
+
+      {/* Featured Spots */}
+      <section className="py-16 px-8 bg-white/80">
+        <h2 className="text-3xl font-bold text-center mb-10">Featured Spots</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {featuredSpots.map((spot, idx) => (
+            <div
+              key={idx}
+              className="bg-white shadow-xl rounded-xl overflow-hidden transition hover:scale-105"
+            >
+              <img src={spot.image} alt={spot.name} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold">{spot.name}</h3>
+                <p className="text-gray-500">{spot.location}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Businesses */}
+      <section className="py-16 px-8 bg-white/80">
+        <h2 className="text-3xl font-bold text-center mb-10">Featured Businesses</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {businesses.length > 0 ? (
+            businesses.map((biz, index) => (
               <div
                 key={index}
-                className="bg-gray-50 p-6 rounded-xl border border-gray-200 hover:border-purple-300 transition-colors"
+                className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition"
               >
-                <div className={`w-12 h-12 ${feature.color} rounded-lg flex items-center justify-center mb-4`}>
-                  {feature.icon}
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center">
-            <Link
-              to="/tools"
-              className="inline-flex items-center text-purple-600 hover:text-purple-700 font-semibold"
-            >
-              See All Tools
-              <ChevronRight className="w-5 h-5 ml-1" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Destinations */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-10">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900">Popular Destinations</h2>
-              <p className="text-gray-600 mt-2">Top picks from travelers</p>
-            </div>
-            <Link
-              to="/destinations"
-              className="text-purple-600 hover:text-purple-700 font-semibold"
-            >
-              View All
-            </Link>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {FEATURED_SPOTS.map((spot) => (
-              <div
-                key={spot.id}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <div className="relative h-56">
-                  <img
-                    src={spot.image}
-                    alt={spot.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-white px-3 py-1 rounded-full text-sm font-medium">
-                      {spot.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-bold text-lg text-gray-900">{spot.name}</h3>
-                      <div className="flex items-center mt-1 text-gray-600">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        <span className="text-sm">{spot.location}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center bg-gray-100 px-2 py-1 rounded">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="ml-1 font-medium">{spot.rating}</span>
-                    </div>
-                  </div>
-                  <Link
-                    to={`/spot/${spot.id}`}
-                    className="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 rounded-lg transition-colors"
-                  >
-                    View Details
-                  </Link>
+                <img
+                  src={biz.image || "https://source.unsplash.com/400x250/?business"}
+                  alt={biz.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold">{biz.name}</h3>
+                  <p className="text-gray-600">{biz.type}</p>
+                  <p className="text-sm text-gray-500">{biz.location}</p>
+                  <p className="mt-2 text-gray-700">{biz.description}</p>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Local Businesses */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-50 rounded-full mb-4">
-              <Users className="w-4 h-4 text-blue-600 mr-2" />
-              <span className="text-sm font-medium text-blue-700">
-                Local Partners
-              </span>
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Trusted Local Businesses
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Connect with verified experts for authentic experiences
-            </p>
-          </div>
-          
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
-                <p className="mt-4 text-gray-500">Loading businesses...</p>
-              </div>
-            </div>
-          ) : error ? (
-            <div className="text-center py-12 bg-red-50 rounded-xl">
-              <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-              <p className="text-gray-700 mb-4">{error}</p>
-              <button
-                onClick={fetchBusinesses}
-                className="text-purple-600 hover:text-purple-700 font-medium"
-              >
-                Try Again
-              </button>
-            </div>
-          ) : businesses.length > 0 ? (
-            <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {businesses.slice(0, 6).map((business) => (
-                  <div
-                    key={business.id}
-                    className="border border-gray-200 rounded-xl p-5 hover:border-purple-300 hover:shadow-md transition-all"
-                  >
-                    <div className="flex items-start mb-4">
-                      <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden mr-4">
-                        <img
-                          src={business.image || "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"}
-                          alt={business.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <h3 className="font-bold text-gray-900">{business.name}</h3>
-                          <CheckCircle className="w-5 h-5 text-green-500" />
-                        </div>
-                        <p className="text-gray-600 text-sm mt-1">{business.type}</p>
-                        <div className="flex items-center text-gray-500 text-sm mt-2">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          {business.location}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-700 mb-4 line-clamp-2">
-                      {business.description || "No description available"}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <Link
-                        to={`/business/${business.id}`}
-                        className="text-purple-600 hover:text-purple-700 font-medium text-sm"
-                      >
-                        View Details →
-                      </Link>
-                      <button className="text-gray-400 hover:text-red-500">
-                        <Heart className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="text-center">
-                <Link
-                  to="/promote"
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg inline-flex items-center"
-                >
-                  <Users className="w-5 h-5 mr-2" />
-                  List Your Business
-                </Link>
-              </div>
-            </>
+            ))
           ) : (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
-              <Globe className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                No Businesses Yet
-              </h3>
-              <p className="text-gray-500 mb-6">
-                Be the first to join our community!
-              </p>
-              <Link
-                to="/promote"
-                className="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700"
-              >
-                Get Started
-              </Link>
-            </div>
+            <p className="text-center text-gray-500 col-span-3"></p>
           )}
         </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-purple-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-gray-600 mb-10">
-              Join thousands of travelers discovering amazing places and experiences.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/signup"
-                className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700"
-              >
-                Create Free Account
-              </Link>
-              <Link
-                to="/explore"
-                className="bg-white text-gray-800 px-8 py-3 rounded-lg font-semibold border border-gray-300 hover:border-purple-400"
-              >
-                Browse Destinations
-              </Link>
-            </div>
-            
-            <div className="mt-10 pt-8 border-t border-gray-200 grid grid-cols-3 gap-6">
-              <div>
-                <div className="font-bold text-gray-900">Free</div>
-                <div className="text-sm text-gray-600">Basic Features</div>
-              </div>
-              <div>
-                <div className="font-bold text-gray-900">No Credit Card</div>
-                <div className="text-sm text-gray-600">Required</div>
-              </div>
-              <div>
-                <div className="font-bold text-gray-900">24/7 Support</div>
-                <div className="text-sm text-gray-600">Always Here</div>
-              </div>
-            </div>
-          </div>
+        <div className="text-center mt-10">
+          <Link
+            to="/promote"
+            className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold px-6 py-3 rounded-full transition"
+          >
+            Promote Your Business
+          </Link>
         </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <Compass className="w-6 h-6 text-purple-400 mr-2" />
-                <span className="text-xl font-bold text-white">ExploreSpot</span>
-              </div>
-              <p className="text-sm">
-                Discover amazing places and connect with local experts.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-semibold mb-4">Explore</h4>
-              <ul className="space-y-2">
-                <li><Link to="/spots" className="hover:text-white">Destinations</Link></li>
-                <li><Link to="/guides" className="hover:text-white">Travel Guides</Link></li>
-                <li><Link to="/categories" className="hover:text-white">Categories</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-semibold mb-4">For Business</h4>
-              <ul className="space-y-2">
-                <li><Link to="/promote" className="hover:text-white">List Your Business</Link></li>
-                <li><Link to="/partners" className="hover:text-white">Partners</Link></li>
-                <li><Link to="/resources" className="hover:text-white">Resources</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-white font-semibold mb-4">Help</h4>
-              <ul className="space-y-2">
-                <li><Link to="/help" className="hover:text-white">Support</Link></li>
-                <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link to="/privacy" className="hover:text-white">Privacy</Link></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="pt-8 border-t border-gray-800 text-center text-sm">
-            © {new Date().getFullYear()} ExploreSpot. All rights reserved.
-          </div>
-        </div>
-      </footer>
+       
+      </section>
     </div>
   );
 };

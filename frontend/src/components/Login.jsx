@@ -14,23 +14,32 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/"); // redirect after login
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError("Invalid email or password");
     }
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="bg-gray-900 p-8 rounded-xl w-full max-w-md text-white">
-        <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-white to-indigo-100 px-4">
+      
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
+        
+        <h2 className="text-3xl font-bold text-center text-purple-700 mb-2">
+          Welcome Back
+        </h2>
+        <p className="text-center text-gray-500 mb-6">
+          Login to continue exploring
+        </p>
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label>Email</label>
+            <label className="text-sm font-medium text-gray-600">
+              Email
+            </label>
             <input
               type="email"
-              className="w-full p-2 bg-gray-800 rounded"
+              className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -38,38 +47,49 @@ const Login = () => {
           </div>
 
           <div>
-            <label>Password</label>
+            <label className="text-sm font-medium text-gray-600">
+              Password
+            </label>
             <input
               type="password"
-              className="w-full p-2 bg-gray-800 rounded"
+              className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm text-center">
+              {error}
+            </p>
+          )}
 
-          <button className="w-full bg-blue-600 py-2 rounded-lg font-bold">
+          <button
+            type="submit"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold transition"
+          >
             Login
           </button>
         </form>
 
-        <GoogleLogin />
+        <div className="my-6">
+          <GoogleLogin />
+        </div>
 
-        <p className="text-center mt-4 text-gray-400">
-          Forgot password?{" "}
-          <Link to="/forgot-password" className="text-blue-400">
-            Reset
+        <div className="text-center text-sm text-gray-500">
+          <Link to="/forgot-password" className="text-purple-600 hover:underline">
+            Forgot password?
           </Link>
-        </p>
+        </div>
 
-        <p className="text-center mt-4 text-gray-400">
+        <p className="text-center mt-4 text-sm text-gray-600">
           Don’t have an account?{" "}
-          <Link to="/signup" className="text-green-400">
+          <Link to="/signup" className="text-purple-600 font-semibold hover:underline">
             Register
           </Link>
         </p>
+
       </div>
     </div>
   );
