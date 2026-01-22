@@ -41,7 +41,7 @@ const Register = () => {
           Create Account
         </h2>
         <p className="text-center text-gray-500 mb-6">
-          Join Explore Spot and start exploring
+          Join Explore Spot and start exploring...
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -114,6 +114,7 @@ const Register = () => {
             className="text-purple-600 font-semibold hover:underline"
           >
             Login
+
           </Link>
         </p>
 
