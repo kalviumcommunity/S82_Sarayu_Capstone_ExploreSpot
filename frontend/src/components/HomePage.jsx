@@ -39,7 +39,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen text-gray-800 font-sans relative">
+    <div className="min-h-screen text-gray-800 font-sans relative bg-gray-50">
       
       {/* Top Right Login/Signup */}
       <header className="absolute top-4 right-6 z-20 flex gap-4">

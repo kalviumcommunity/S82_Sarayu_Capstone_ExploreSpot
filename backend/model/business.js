@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const businessSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true, // 👈 This is important
+    required: true,
   },
   location: String,
   description: String,

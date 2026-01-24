@@ -11,8 +11,7 @@ backend/node_modules
 frontend/node_modules
 backend/.env
 
-
-
+#Dependency directories
 node_modules
 dist
 dist-ssr

@@ -21,22 +21,45 @@ const TripPlanner = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setTripPlan(null);
 
     try {
+      const payload = {
+        destination: formData.destination,
+        days: Number(formData.days),
+        budget: formData.budget ? Number(formData.budget) : undefined,
+        preferences: formData.preferences?.trim()
+      };
+
+      if (!payload.preferences) {
+        delete payload.preferences;
+      }
+
       const res = await axios.post(
         "http://localhost:5000/api/ai/test",
-        formData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        payload,
+        { timeout: 20000 }
       );
 
-      setTripPlan(res.data);
-    } catch (err) {
-      setError("Failed to generate AI Trip Plan 🚫");
-    }
+      const data = res.data;
 
-    setLoading(false);
+      if (!data.itinerary || !Array.isArray(data.itinerary)) {
+        throw new Error("Invalid itinerary received from AI");
+      }
+
+      setTripPlan(data);
+    } catch (err) {
+      console.error("API ERROR:", err.response?.data || err.message);
+
+      setError(
+        err.response?.data?.error ||
+        err.response?.data?.details ||
+        err.message ||
+        "Failed to generate AI Trip Plan"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,6 +78,7 @@ const TripPlanner = () => {
             className="w-full border rounded-xl p-3"
             required
           />
+
           <input
             name="days"
             placeholder="Total Days"
@@ -64,6 +88,7 @@ const TripPlanner = () => {
             className="w-full border rounded-xl p-3"
             required
           />
+
           <input
             name="budget"
             placeholder="Budget (optional)"
@@ -71,6 +96,7 @@ const TripPlanner = () => {
             onChange={handleChange}
             className="w-full border rounded-xl p-3"
           />
+
           <input
             name="preferences"
             placeholder="Preferences (optional)"
@@ -88,7 +114,9 @@ const TripPlanner = () => {
           </button>
         </form>
 
-        {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-600 mt-4 text-center">{error}</p>
+        )}
 
         {tripPlan && (
           <div className="mt-8 bg-purple-50 p-6 rounded-xl">
@@ -96,9 +124,14 @@ const TripPlanner = () => {
             <p className="mb-4">{tripPlan.summary}</p>
 
             <h3 className="text-lg font-medium mb-2">📅 Itinerary</h3>
-            {tripPlan.itinerary?.map((day, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow mb-3">
-                <h4 className="font-bold">Day {day.day}: {day.title}</h4>
+            {tripPlan.itinerary.map((day, index) => (
+              <div
+                key={index}
+                className="bg-white p-4 rounded-lg shadow mb-3"
+              >
+                <h4 className="font-bold">
+                  Day {day.day}: {day.title}
+                </h4>
                 <p>🌅 Morning: {day.morning}</p>
                 <p>🌤 Afternoon: {day.afternoon}</p>
                 <p>🌙 Evening: {day.evening}</p>
@@ -106,10 +139,16 @@ const TripPlanner = () => {
               </div>
             ))}
 
-            <h3 className="text-lg font-medium mt-4">🏨 Hotels</h3>
-            {tripPlan.hotel_suggestions?.map((hotel, index) => (
-              <p key={index}>• {hotel.name} — {hotel.priceRange}</p>
-            ))}
+            {tripPlan.hotel_suggestions?.length > 0 && (
+              <>
+                <h3 className="text-lg font-medium mt-4">🏨 Hotels</h3>
+                {tripPlan.hotel_suggestions.map((hotel, index) => (
+                  <p key={index}>
+                    • {hotel.name} — {hotel.priceRange}
+                  </p>
+                ))}
+              </>
+            )}
 
             <h3 className="text-lg font-medium mt-4">💰 Budget Estimate</h3>
             <p>{tripPlan.budgetEstimate}</p>
