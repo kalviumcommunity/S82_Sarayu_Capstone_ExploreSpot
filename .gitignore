@@ -1,0 +1,11 @@
+touch .gitignore# dependencies
+node_modules/
+
+# env files
+.env
+backend/.env
+frontend/.env
+
+# build outputs
+dist/
+build/
